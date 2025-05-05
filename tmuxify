@@ -1,0 +1,155 @@
+#!/usr/bin/env node
+import inquirer from 'inquirer'
+import path from 'path'
+import fs from 'fs/promises'
+import { execSync } from 'child_process';
+
+
+const settings = {
+  cmd: "workspace",
+  path: ".",
+  t: true
+}
+
+function loadSettings() {
+  const args = process.argv.splice(2);
+  for (let i = 0; i < args.length; i++) {
+    const curr = args[i];
+    if (curr.startsWith("--")) {
+      const entry = curr.split("=")
+      let key = '', value = ''
+      if (entry.length == 1) {
+        key = entry[0].slice(2);
+        value = args[++i]
+      }
+      settings[key] = value
+    }
+    else if (curr.startsWith("-")) {
+      settings[curr.slice(1)] = true
+    }
+    else {
+      settings[Object.keys(settings)[i]] = curr
+    }
+  }
+}
+
+function abspath(...rp) {
+  return path.join(process.cwd(), settings.path, ...rp)
+}
+
+async function getDirectories() {
+  const files = await fs.readdir(abspath())
+  const directories = [];
+  for (const file of files) {
+    const stat = await fs.stat(abspath(file))
+    if (stat.isDirectory()) {
+      directories.push(file)
+    }
+  }
+  return directories;
+}
+
+async function loadDirectories() {
+  const directories = await getDirectories();
+  for (const dir of directories) {
+    if (dir.startsWith(".")) continue;
+    console.log(dir)
+    let cmd = []
+    cmd.push("tmux", "new-window")
+    cmd.push("-n", `'${dir}'`)
+    cmd.push("-c", `'${abspath(dir)}'`)
+    cmd.push("''nvim .")
+    execSync(cmd.join(" "))
+  }
+}
+
+async function exists(...rp) {
+  try {
+    await fs.stat(abspath(...rp))
+    return true
+  }
+  catch (e) {
+    return false;
+  }
+}
+
+async function loadScripts() {
+  const p = [".vscode"]
+  if (!(await exists(...p))) return;
+  p.push("multi-terminals.json")
+  if (!(await exists(...p))) return;
+  let content = await fs.readFile(abspath(...p), "utf-8");
+  return JSON.parse(content)
+}
+
+async function choiceService(content) {
+  const choices = [];
+  for (let i = 0; i < content.length; i++) {
+    choices.push({ value: i, name: content[i].label })
+  }
+  return await inquirer.prompt([{
+    type: "select",
+    name: "selected",
+    message: "",
+    choices,
+    validate: (i) => i.length > 0 || "Select at least 1 choice"
+  }])
+}
+
+async function cmds() {
+  const content = await loadScripts();
+
+  if (content.length === 0) return;
+  let selected = 0
+  if (content.length > 1) {
+    selected = (await choiceService(content)).selected
+  }
+  const { commands } = content[selected]
+  const paneIds = [];
+
+  let paneId = execSync("tmux display-message -p '#{pane_id}'").toString().trim();
+  paneIds.push(paneId);
+
+  for (let i = 1; i < commands.length; i++) {
+    const output = execSync("tmux split-window -v -P -F '#{pane_id}'").toString().trim();
+    paneIds.push(output);
+  }
+
+  execSync("tmux select-layout even-vertical");
+
+  for (let i = 0; i < commands.length; i++) {
+    const cmd = commands[i];
+    const fullCmd = `cd ${abspath(cmd.cwd || '')} && ${cmd.script}`;
+    execSync(`tmux send-keys -t ${paneIds[i]} "${fullCmd}" Enter`);
+  }
+}
+
+
+async function workspace() {
+  if (settings.t) {
+    await loadDirectories();
+  }
+  else {
+    execSync("tmux new-window -n '" + settings.path + "' -c 'nvim .'");
+  }
+  const cmd = []
+  cmd.push("tmux", "new-window")
+  cmd.push("-n 'cmds'")
+
+  const subcmd = []
+  cmd.push("-c", `'${abspath()}'`, `'${subcmd.join(' ')}'`)
+
+  execSync(cmd.join(' '))
+  cmds();
+}
+
+
+async function main() {
+  loadSettings();
+  try {
+    const func = { workspace, cmds }
+    await func[settings.cmd]()
+  } catch (e) { }
+}
+
+main()
