@@ -42,19 +42,6 @@ return {
 		end,
 	},
 	{
-		"Mofiqul/vscode.nvim", -- VSCode theme
-		lazy = false,
-		priority = 1000,
-		config = function()
-			vim.o.background = "dark" -- or "light" for VSCode Light theme
-			require("vscode").setup({
-				italic_comments = true,
-				disable_nvimtree_bg = true,
-			})
-			require("vscode").load()
-		end,
-	},
-	{
 		"nvim-treesitter/nvim-treesitter",
 		opts = {
 			ensure_installed = {
