@@ -1,16 +1,16 @@
 require("nvchad.mappings")
 
--- dd ([yours]) here
-
 local map = vim.keymap.set
-local unmap = vim.keymap.del
 
 map("n", ";", ":", { desc = "CMD enter command mode" })
-map({ "n" }, "=", "$", { desc = "End of line" })
+map({ "n", "v" }, "=", "$", { desc = "End of line" })
+map({ "n", "v" }, "s", "S", { desc = "Surround text", remap = true })
 
 map({ "n", "v" }, ",", "[m", { desc = "", nowait = true })
 map({ "n", "v" }, ".", "]m", { desc = "", nowait = true })
-map("i", "\\\\", "<ESC>")
+
+map("n", "sv", function()
+end, { desc = "" })
 
 local function indent()
   local keys = { "<", ">" }
@@ -21,11 +21,13 @@ local function indent()
 end
 
 local function surround()
-  local keys = { "(", "[", "{" }
-  local closing = { ")", "]", "}" }
-  for i, key in ipairs(keys) do
-    map("v", key, "S" .. key)
-    map("v", closing[i], "S" .. closing[i])
+  local surround_keys = { '"', "'", "(", "[", "{", "`" }
+
+  for _, key in ipairs(surround_keys) do
+    map("v", key, function()
+      vim.api.nvim_feedkeys("S" .. key, "x", false)
+      vim.api.nvim_feedkeys("vi" .. key, "n", false)
+    end, { noremap = true, silent = true, desc = "Surround with " .. key })
   end
 end
 
@@ -75,24 +77,36 @@ local function tmux()
   local cmd = vim.fn.system
   map({ "n", "v" }, "<leader>tc", function()
     cmd("tmux new-window")
-  end)
-  map({ "n", "v" }, "<leader>tv", function()
-    cmd("tmux split -v")
-  end)
-  -- map({ "n", "v" }, "<leader>th", function()
-  --   cmd("tmux split -h")
-  -- end)
+  end, { desc = "Tmux create window" })
+
   map({ "n", "v" }, "<leader>tn", function()
     cmd("tmux next-window")
-  end)
+  end, { desc = "Tmux next window" })
+
   map({ "n", "v" }, "<leader>tp", function()
-    cmd("tmux prev-window")
-  end)
-  -- for i = 1, 9 do
-  -- 	map({ "n", "v" }, "<leader>t" .. i, function()
-  -- 		cmd("tmux select-window -t " .. i)
-  -- 	end)
-  -- end
+    cmd("tmux previous-window")
+  end, { desc = "Tmux prev window" })
+
+  map({ "n", "v", "i" }, "<C-J>", function()
+    cmd("tmux split -v")
+  end, { desc = "Tmux split vertical" })
+
+  map({ "n", "v", "i" }, "<C-H>", function()
+    cmd("tmux split -h")
+  end, { desc = "Tmux split horizontal" })
+
+  map({ "n", "v", "i" }, "<C-h>", function()
+    cmd("tmux select-pane -L")
+  end, { desc = "" })
+  map({ "n", "v", "i" }, "<C-j>", function()
+    cmd("tmux select-pane -D")
+  end, { desc = "" })
+  map({ "n", "v", "i" }, "<C-k>", function()
+    cmd("tmux select-pane -U")
+  end, { desc = "" })
+  map({ "n", "v", "i" }, "<C-l>", function()
+    cmd("tmux select-pane -R")
+  end, { desc = "" })
 end
 
 debugger()
