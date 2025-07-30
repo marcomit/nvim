@@ -1,56 +1,66 @@
 return {
-	{
-		"stevearc/conform.nvim",
-		event = "BufWritePre", -- uncomment for format on save
-		opts = require("configs.conform"),
-	},
-	{
-		"mfussenegger/nvim-dap",
-	},
-	{
-		"rcarriga/nvim-dap-ui",
-		dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" },
-		config = function()
-			require("dapui").setup()
-			local dap, dapui = require("dap"), require("dapui")
-			dap.listeners.after.event_initialized["dapui_config"] = function()
-				dapui.open()
-			end
-			dap.listeners.before.event_terminated["dapui_config"] = function()
-				dapui.close()
-			end
-			dap.listeners.before.event_exited["dapui_config"] = function()
-				dapui.close()
-			end
-		end,
-	},
-	{
-		"jay-babu/mason-nvim-dap.nvim",
-		dependencies = { "williamboman/mason.nvim", "mfussenegger/nvim-dap" },
-		config = function()
-			require("mason-nvim-dap").setup({
-				automatic_setup = true,
-			})
-			require("mason-nvim-dap").setup_handlers()
-		end,
-	},
-	-- These are some examples, uncomment them if you want to see them work!
-	{
-		"neovim/nvim-lspconfig",
-		config = function()
-			require("configs.lspconfig")
-		end,
-	},
-	{
-		"nvim-treesitter/nvim-treesitter",
-		opts = {
-			ensure_installed = {
-				"vim",
-				"lua",
-				"vimdoc",
-				"html",
-				"css",
-			},
-		},
-	},
+  { lazy = true, "nvim-lua/plenary.nvim" },
+
+  { "nvim-tree/nvim-web-devicons", opts = {} },
+
+  "https://github.com/Mofiqul/vscode.nvim.git",
+
+  {
+    "nvim-treesitter/nvim-treesitter",
+    build = ":TSUpdate",
+    config = function()
+      require "plugins.configs.treesitter"
+    end,
+  },
+  -- we use blink plugin only when in insert mode
+  -- so lets lazyload it at InsertEnter event
+  {
+    "saghen/blink.cmp",
+    version = "1.*",
+    event = "InsertEnter",
+    dependencies = {
+      "rafamadriz/friendly-snippets",
+
+      -- snippets engine
+      {
+        "L3MON4D3/LuaSnip",
+        config = function()
+          require("luasnip.loaders.from_vscode").lazy_load()
+        end,
+      },
+
+      -- autopairs , autocompletes ()[] etc
+      { "windwp/nvim-autopairs", opts = {} },
+    },
+    -- made opts a function cuz cmp config calls cmp module
+    -- and we lazyloaded cmp so we dont want that file to be read on startup!
+    opts = function()
+      return require "plugins.configs.blink"
+    end,
+  },
+
+  {
+    "williamboman/mason.nvim",
+    build = ":MasonUpdate",
+    cmd = { "Mason", "MasonInstall" },
+    opts = {},
+  },
+
+  {
+    "neovim/nvim-lspconfig",
+    config = function()
+      require "plugins.configs.lspconfig"
+    end,
+  },
+
+  {
+    "stevearc/conform.nvim",
+    opts = require "plugins.configs.conform",
+  },
+  {
+    "stevearc/oil.nvim",
+    opts = function()
+      require "plugins.configs.oil"
+    end
+  }
 }
