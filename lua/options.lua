@@ -1,6 +1,8 @@
 local o = vim.o
+local g = vim.g
+local opt = vim.opt
 
-vim.g.mapleader = " "
+g.mapleader = " "
 
 o.laststatus = 3 -- global statusline
 o.showmode = false
@@ -13,8 +15,9 @@ o.shiftwidth = 2
 o.smartindent = true
 o.tabstop = 2
 o.softtabstop = 2
+o.winborder = "rounded"
 
-vim.opt.fillchars = { eob = " " }
+opt.fillchars = { eob = " " }
 o.ignorecase = true
 o.smartcase = true
 o.mouse = "a"
@@ -28,7 +31,9 @@ o.termguicolors = true
 o.timeoutlen = 400
 o.undofile = true
 o.cursorline = true
+o.relativenumber = true
 
+opt.whichwrap:append "<>[]hl"
 
 -- add binaries installed by mason.nvim to path
 local is_windows = vim.loop.os_uname().sysname == "Windows_NT"

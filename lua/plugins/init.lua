@@ -3,14 +3,37 @@ return {
 
   { "nvim-tree/nvim-web-devicons", opts = {} },
 
+  "https://github.com/MunifTanjim/nui.nvim.git",
+
   "https://github.com/Mofiqul/vscode.nvim.git",
 
+  "kdheepak/lazygit.nvim",
   {
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdate",
     config = function()
       require "plugins.configs.treesitter"
     end,
+  },
+  -- { "nvim-telescope/telescope.nvim.git",
+  --   dependencies = { "nvim-lua/plenary.nvim" },
+  --   config = function()
+  --     require "plugins.configs.telescope"
+  --   end
+  -- },
+  {
+    "nvim-telescope/telescope.nvim",
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+    },
+    cmd = "Telescope",
+    opts = function()
+       require "plugins.configs.telescope"
+    end,
+  },
+  { "kylechui/nvim-surround",
+    config = function ()
+    end
   },
   -- we use blink plugin only when in insert mode
   -- so lets lazyload it at InsertEnter event
