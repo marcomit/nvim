@@ -10,9 +10,33 @@ map({ "n", "v" }, "<leader>q", ":quit<CR>")
 
 map({ "n", "v" }, "-", "^")
 map({ "n", "v" }, "=", "$")
+map({ "n", "v" }, "s", "S", { desc = "Surround text", remap = true })
 
-map("n", "<leader>e", ":Oil<CR>", { desc = "File explorer" })
+map("n", "<leader>e", "<cmd>Oil<CR>", { desc = "File explorer" })
 
+map("n", "<leader>n", "<cmd>set nu!<CR>", { desc = "Toggle line number" })
+map("n", "<leader>r", "<cmd>set rnu!<CR>", { desc = "Toggle line number" })
+
+local function indent()
+  local keys = { "<", ">" }
+  for _, key in ipairs(keys) do
+    map("n", key, "v" .. key, {})
+    map("v", key, key .. "gv", {})
+  end
+end
+
+
+
+local function surround()
+  local surround_keys = { '"', "'", "(", "[", "{", "`" }
+
+  for _, key in ipairs(surround_keys) do
+    map("v", key, function()
+      vim.api.nvim_feedkeys("S" .. key, "x", false)
+      vim.api.nvim_feedkeys("vi" .. key, "n", false)
+    end, { noremap = true, silent = true, desc = "Surround with " .. key })
+  end
+end
 -- Diagnostics
 map("n", "<leader>d", vim.diagnostic.open_float)
 
@@ -29,17 +53,11 @@ end)
 map('n', '<leader>lg', "<cmd>Lazygit<CR>")
 
 -- Telescope
-local function telescope()
-  local cmd = ":Telescope "
-  map("n", "<leader>ff", cmd .. "find_files<CR>")
-  map("n", "<leader>fw", cmd .. "live_grep<CR>")
-  map("n", "<leader>fb", cmd .. "buffers<CR>")
-  map('n', '<leader>ft', ":TelescopeToggleBorder<CR>")
-end
+map("n", "<leader>ff", ":Telescope find_files<CR>")
+map("n", "<leader>fw", ":Telescope live_grep<CR>")
+map("n", "<leader>fb", ":Telescope buffers<CR>")
+map('n', '<leader>ft', ":TelescopeToggleBorder<CR>")
 
-local function lazygit()
-  -- Set up keymaps for different NUI lazygit functions
-end
 
 -- Swap lines
 local function swap_lines()
@@ -51,10 +69,8 @@ local function swap_lines()
 end
 
 
-local function replace()
-  map("n", "rw", [[:%s/\<<C-r><C-w>\>//gc<Left><Left><Left>]], { desc = "Replace word under cursor" })
-  map("v", "rs", [["hy:%s/<C-r>h//gc<Left><Left><Left>]], { desc = "Replace selection" })
-end
+map("n", "rw", [[:%s/\<<C-r><C-w>\>//gc<Left><Left><Left>]], { desc = "Replace word under cursor" })
+map("v", "rs", [["hy:%s/<C-r>h//gc<Left><Left><Left>]], { desc = "Replace selection" })
 
 local function surround()
   local surround_keys = { '"', "'", "(", "[", "{", "`" }
@@ -66,10 +82,43 @@ local function surround()
   end
 end
 
+local function bufferline()
+  map('n', "<Tab>", "<cmd>BufferLineCycleNext<CR>", { desc = "Next tab" })
+  map('n', "<S-Tab>", "<cmd>BufferLineCyclePrev<CR>", { desc = "Prev tab" })
+
+  map('n', '<leader>x', '<cmd>bdelete<CR>')
+
+  for i = 1, 9 do
+    map('n', '<leader>' .. i, '<cmd>BufferLineGoToBuffer ' .. i .. '<CR>',
+      { desc = "Go to tab " .. i })
+  end
+end
+
+local function toggle_statusline()
+  if vim.opt.laststatus:get() == 0 then
+    vim.opt.laststatus = 2
+    print('Statusline enabled')
+  else
+    vim.opt.laststatus = 0
+    print('Statusline disabled')
+  end
+end
+
+local function minimal_mode()
+  vim.opt.laststatus = 0
+  vim.opt.cmdheight = 0
+  vim.opt.ruler = false
+  vim.opt.showmode = false
+  vim.opt.showcmd = false
+end
+
+map('n', '<leader>ts', toggle_statusline, { desc = "Toggle statusline" })
+map('n', '<leader>tm', minimal_mode, { desc = "Toggle minimal_mode" })
 
 
 swap_lines()
-replace()
 surround()
-telescope()
-lazygit()
+bufferline()
+minimal_mode()
+surround()
+indent()

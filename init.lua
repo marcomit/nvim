@@ -29,13 +29,13 @@ vim.diagnostic.config({
   underline = false,
   update_in_insert = false,
   float = {
-      focusable = true,
-      close_events = { "BufLeave", "CursorMoved", "InsertEnter", "FocusLost" },
-      border = 'rounded',
-      source = 'always',
-      header = '',
-      scope = 'cursor',
-    },
+    focusable = true,
+    close_events = { "BufLeave", "CursorMoved", "InsertEnter", "FocusLost" },
+    border = 'rounded',
+    source = 'always',
+    header = '',
+    scope = 'cursor',
+  },
 })
 
 vim.api.nvim_create_autocmd("BufWritePre", {
@@ -47,3 +47,9 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 vim.cmd "colorscheme vscode"
 
 vim.cmd(":hi statusline guibg=NONE")
+
+vim.opt.laststatus = 0
+vim.opt.cmdheight = 0
+vim.opt.ruler = false
+vim.opt.showmode = false
+vim.opt.showcmd = false

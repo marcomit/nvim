@@ -1,7 +1,37 @@
 return {
-  { lazy = true, "nvim-lua/plenary.nvim" },
+  { lazy = true,                   "nvim-lua/plenary.nvim" },
 
   { "nvim-tree/nvim-web-devicons", opts = {} },
+
+  {
+    "kdheepak/lazygit.nvim",
+    lazy = true,
+    cmd = {
+      "LazyGit",
+      "LazyGitConfig",
+      "LazyGitCurrentFile",
+      "LazyGitFilter",
+      "LazyGitFilterCurrentFile",
+    },
+    -- optional for floating window border decoration
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+    },
+    -- setting the keybinding for LazyGit with 'keys' is recommended in
+    -- order to load the plugin when the command is run for the first time
+    keys = {
+      { "<leader>lg", "<cmd>LazyGit<cr>", desc = "LazyGit" }
+    }
+  },
+
+  {
+    'akinsho/bufferline.nvim',
+    version = "*",
+    dependencies = 'nvim-tree/nvim-web-devicons',
+    config = function()
+      require('bufferline').setup()
+    end
+  },
 
   "https://github.com/MunifTanjim/nui.nvim.git",
 
@@ -28,11 +58,16 @@ return {
     },
     cmd = "Telescope",
     opts = function()
-       require "plugins.configs.telescope"
+      require "plugins.configs.telescope"
     end,
   },
-  { "kylechui/nvim-surround",
-    config = function ()
+  {
+    "kylechui/nvim-surround",
+    version = "^3.0.0",
+    event = "VeryLazy",
+    config = function()
+      require("nvim-surround").setup({
+      })
     end
   },
   -- we use blink plugin only when in insert mode
