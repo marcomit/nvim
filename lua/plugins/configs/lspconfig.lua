@@ -1,4 +1,6 @@
 -- Use LspAttach autocommand to only map the following keys
+
+
 vim.api.nvim_create_autocmd("LspAttach", {
   group = vim.api.nvim_create_augroup("UserLspConfig", {}),
   callback = function(ev)
@@ -39,6 +41,6 @@ capabilities.textDocument.completion.completionItem = {
 }
 
 vim.lsp.config("*", { capabilities = capabilities })
-local servers = { "html", "cssls" , 'lua_ls', 'dartls', 'clangd', "ts_ls" }
+local servers = { "html", "cssls", 'lua_ls', 'dartls', 'clangd', "ts_ls", "gopls" }
 
 vim.lsp.enable(servers)

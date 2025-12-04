@@ -24,14 +24,14 @@ return {
     }
   },
 
-  {
-    'akinsho/bufferline.nvim',
-    version = "*",
-    dependencies = 'nvim-tree/nvim-web-devicons',
-    config = function()
-      require('bufferline').setup()
-    end
-  },
+  -- {
+  --   'akinsho/bufferline.nvim',
+  --   version = "*",
+  --   dependencies = 'nvim-tree/nvim-web-devicons',
+  --   config = function()
+  --     require('bufferline').setup()
+  --   end
+  -- },
 
   "https://github.com/MunifTanjim/nui.nvim.git",
 
@@ -120,5 +120,12 @@ return {
     opts = function()
       require "plugins.configs.oil"
     end
-  }
+  },
+  {
+    "kdheepak/lazygit.nvim",
+    cmd = "LazyGit",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+    },
+  },
 }

@@ -9,6 +9,7 @@ map("n", "w", ":w<CR>")
 map({ "n", "v" }, "<leader>q", ":quit<CR>")
 
 map({ "n", "v" }, "-", "^")
+map({ "n", "v" }, ",", "%")
 map({ "n", "v" }, "=", "$")
 map({ "n", "v" }, "s", "S", { desc = "Surround text", remap = true })
 
@@ -25,18 +26,6 @@ local function indent()
   end
 end
 
-
-
-local function surround()
-  local surround_keys = { '"', "'", "(", "[", "{", "`" }
-
-  for _, key in ipairs(surround_keys) do
-    map("v", key, function()
-      vim.api.nvim_feedkeys("S" .. key, "x", false)
-      vim.api.nvim_feedkeys("vi" .. key, "n", false)
-    end, { noremap = true, silent = true, desc = "Surround with " .. key })
-  end
-end
 -- Diagnostics
 map("n", "<leader>d", vim.diagnostic.open_float)
 
@@ -50,13 +39,13 @@ map("n", "<leader>fm", function()
 end)
 
 -- Lazygit
-map('n', '<leader>lg', "<cmd>Lazygit<CR>")
+map('n', '<leader>gg', "<cmd>LazyGit<CR>")
 
 -- Telescope
 map("n", "<leader>ff", ":Telescope find_files<CR>")
 map("n", "<leader>fw", ":Telescope live_grep<CR>")
 map("n", "<leader>fb", ":Telescope buffers<CR>")
-map('n', '<leader>ft', ":TelescopeToggleBorder<CR>")
+-- map('n', '<leader>ft', ":TelescopeToggleBorder<CR>")
 
 
 -- Swap lines
@@ -87,38 +76,10 @@ local function bufferline()
   map('n', "<S-Tab>", "<cmd>BufferLineCyclePrev<CR>", { desc = "Prev tab" })
 
   map('n', '<leader>x', '<cmd>bdelete<CR>')
-
-  for i = 1, 9 do
-    map('n', '<leader>' .. i, '<cmd>BufferLineGoToBuffer ' .. i .. '<CR>',
-      { desc = "Go to tab " .. i })
-  end
 end
-
-local function toggle_statusline()
-  if vim.opt.laststatus:get() == 0 then
-    vim.opt.laststatus = 2
-    print('Statusline enabled')
-  else
-    vim.opt.laststatus = 0
-    print('Statusline disabled')
-  end
-end
-
-local function minimal_mode()
-  vim.opt.laststatus = 0
-  vim.opt.cmdheight = 0
-  vim.opt.ruler = false
-  vim.opt.showmode = false
-  vim.opt.showcmd = false
-end
-
-map('n', '<leader>ts', toggle_statusline, { desc = "Toggle statusline" })
-map('n', '<leader>tm', minimal_mode, { desc = "Toggle minimal_mode" })
-
 
 swap_lines()
 surround()
 bufferline()
-minimal_mode()
 surround()
 indent()

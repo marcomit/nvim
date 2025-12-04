@@ -33,6 +33,7 @@ o.termguicolors = true
 o.timeoutlen = 400
 o.undofile = true
 o.cursorline = true
+-- opt.guicursor = "n-v-c-i:block,r:hor20"
 opt.whichwrap:append "<>[]hl"
 
 -- add binaries installed by mason.nvim to path

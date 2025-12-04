@@ -17,6 +17,7 @@ local function make_popup(opts)
   function popup.border:change_title(title)
     popup.border.set_text(popup.border, "top", title)
   end
+
   return TSLayout.Window(popup)
 end
 
@@ -38,7 +39,7 @@ telescope.setup({
         },
         win_options = { winhighlight = "Normal:Normal" },
       })
-      
+
       local prompt = make_popup({
         enter = true,
         border = {
@@ -47,10 +48,10 @@ telescope.setup({
         },
         win_options = { winhighlight = "Normal:Normal" },
       })
-      
+
       local preview = nil
       local layout_boxes = {}
-      
+
       -- Create preview pane if previewer is enabled
       if picker.previewer then
         preview = make_popup({
@@ -61,7 +62,7 @@ telescope.setup({
           },
           win_options = { winhighlight = "Normal:Normal" },
         })
-        
+
         -- Horizontal layout: prompt on top, results and preview side by side
         layout_boxes = {
           Layout.Box(prompt, { size = 3 }),
@@ -77,18 +78,18 @@ telescope.setup({
           Layout.Box(results, { grow = 1 }),
         }
       end
-      
+
       local layout = Layout({
         relative = "editor",
         position = "50%",
         size = picker.previewer and picker.layout_config.horizontal.size or picker.layout_config.vertical.size,
       }, Layout.Box(layout_boxes, { dir = "col" }))
-      
+
       layout.picker = picker
       layout.results = results
       layout.prompt = prompt
       layout.preview = preview
-      
+
       return TSLayout(layout)
     end,
   },

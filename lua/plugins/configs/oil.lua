@@ -8,7 +8,7 @@ require('oil').setup {
   },
   buf_options = {
     buflisted = false,
-    bufhidden = "hide",
+    -- bufhidden = "hide",
   },
   win_options = {
     wrap = false,
@@ -22,7 +22,7 @@ require('oil').setup {
   },
   delete_to_trash = false,
   skip_confirm_for_simple_edits = false,
-  prompt_save_on_select_new_entry = true,
+  prompt_save_on_select_new_entry = false,
   cleanup_delay_ms = 2000,
   lsp_file_methods = {
     timeout_ms = 1000,
@@ -51,13 +51,6 @@ require('oil').setup {
   use_default_keymaps = true,
   view_options = {
     show_hidden = true,
-    is_hidden_file = function(name, bufnr)
-      return true
-    end,
-    is_always_hidden = function(name, bufnr)
-      return false
-    end,
-    natural_order = true,
     sort = {
       { "type", "asc" },
       { "name", "asc" },

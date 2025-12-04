@@ -1,8 +1,6 @@
 require "options"
 require "mappings"
-require "dashboard"
 
--- prova
 -- bootstrap plugins & lazy.nvim
 local lazypath = vim.fn.stdpath "data" .. "/lazy/lazy.nvim" -- path where its going to be installed
 
@@ -21,11 +19,11 @@ vim.opt.rtp:prepend(lazypath)
 
 local plugins = require "plugins"
 
-require("lazy").setup(plugins, require "lazy_config")
+require("lazy").setup(plugins, {})
 
 vim.diagnostic.config({
   virtual_text = true,
-  signs = true,
+  signs = false,
   underline = false,
   update_in_insert = false,
   float = {
@@ -40,7 +38,9 @@ vim.diagnostic.config({
 
 vim.api.nvim_create_autocmd("BufWritePre", {
   callback = function()
-    vim.lsp.buf.format({ async = false })
+    if vim.bo.filetype ~= "c" then
+      vim.lsp.buf.format({ async = false })
+    end
   end,
 })
 
