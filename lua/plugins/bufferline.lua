@@ -3,7 +3,7 @@ return {
         close_command = "bdelete %d",
         indicator = {
           style = "icon",
-          icon = " ",
+          icon = "",
         },
         left_trunc_marker = "",
         modified_icon = "●",
@@ -11,7 +11,7 @@ return {
         right_mouse_command = "bdelete! %d",
         right_trunc_marker = "",
         show_close_icon = false,
-        show_tab_indicators = true,
+        show_tab_indicators = false,
     },
     highlights = {
         fill = {

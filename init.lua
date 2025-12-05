@@ -9,13 +9,11 @@ vim.pack.add({
 	{ src = "https://github.com/neovim/nvim-lspconfig" },
 	{ src = "https://github.com/windwp/nvim-autopairs" },
 	{ src = "https://github.com/akinsho/bufferline.nvim" },
-  { src = "https://github.com/hrsh7th/nvim-cmp" },
-  { src = "https://github.com/hrsh7th/cmp-nvim-lsp" },
-  { src = "https://github.com/hrsh7th/cmp-buffer" },
-  { src = "https://github.com/hrsh7th/cmp-path" },
 	{ src = "https://github.com/nvim-telescope/telescope.nvim" },
 	{ src = "https://github.com/nvim-treesitter/nvim-treesitter" },
-	{ src = "https://github.com/nvim-lua/plenary.nvim" }
+	{ src = "https://github.com/nvim-lua/plenary.nvim" },
+	{ src = "https://github.com/kylechui/nvim-surround" },
+	{ src = "https://github.com/saghen/blink.cmp" }
 })
 
 require('vscode').setup({
@@ -27,13 +25,13 @@ require('bufferline').setup(require('plugins.bufferline'))
 require('nvim-treesitter').setup({
 	ensure_installed = { "lua", "vim", "typescript", "javascript", "dart" }
 })
+require('nvim-surround').setup({})
 
 local telescope = require('telescope')
--- telescope.load_extension('fzf')
 telescope.setup{
   defaults = {
     file_ignore_patterns = {"node_modules", ".git/", "windows", "macos", "build", "linux", "ios", "android"},
-  },
+  }
 }
 
 vim.diagnostic.config({
