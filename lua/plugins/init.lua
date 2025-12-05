@@ -1,131 +1,24 @@
 return {
-  { lazy = true,                   "nvim-lua/plenary.nvim" },
+	{ src = "https://github.com/Mofiqul/vscode.nvim" },
+	{ src = "https://github.com/stevearc/oil.nvim" },
+	{ src = "https://github.com/neovim/nvim-lspconfig" },
+	{ src = "https://github.com/windwp/nvim-autopairs" },
+	{ src = "https://github.com/akinsho/bufferline.nvim" },
+  { src = "https://github.com/hrsh7th/nvim-cmp" },
+  { src = "https://github.com/hrsh7th/cmp-nvim-lsp" },
+  { src = "https://github.com/hrsh7th/cmp-buffer" },
+  { src = "https://github.com/hrsh7th/cmp-path" },
+	{
+		src = "https://github.com/nvim-telescope/telescope.nvim",
+		setup = require('plugins.telescope'),
+		opts = function() 
+			local builtin = require('telescope.builtin')
 
-  { "nvim-tree/nvim-web-devicons", opts = {} },
-
-  {
-    "kdheepak/lazygit.nvim",
-    lazy = true,
-    cmd = {
-      "LazyGit",
-      "LazyGitConfig",
-      "LazyGitCurrentFile",
-      "LazyGitFilter",
-      "LazyGitFilterCurrentFile",
-    },
-    -- optional for floating window border decoration
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-    },
-    -- setting the keybinding for LazyGit with 'keys' is recommended in
-    -- order to load the plugin when the command is run for the first time
-    keys = {
-      { "<leader>lg", "<cmd>LazyGit<cr>", desc = "LazyGit" }
-    }
-  },
-
-  -- {
-  --   'akinsho/bufferline.nvim',
-  --   version = "*",
-  --   dependencies = 'nvim-tree/nvim-web-devicons',
-  --   config = function()
-  --     require('bufferline').setup()
-  --   end
-  -- },
-
-  "https://github.com/MunifTanjim/nui.nvim.git",
-
-  "https://github.com/Mofiqul/vscode.nvim.git",
-
-  "kdheepak/lazygit.nvim",
-  {
-    "nvim-treesitter/nvim-treesitter",
-    build = ":TSUpdate",
-    config = function()
-      require "plugins.configs.treesitter"
-    end,
-  },
-  -- { "nvim-telescope/telescope.nvim.git",
-  --   dependencies = { "nvim-lua/plenary.nvim" },
-  --   config = function()
-  --     require "plugins.configs.telescope"
-  --   end
-  -- },
-  {
-    "nvim-telescope/telescope.nvim",
-    dependencies = {
-      "nvim-treesitter/nvim-treesitter",
-    },
-    cmd = "Telescope",
-    opts = function()
-      require "plugins.configs.telescope"
-    end,
-  },
-  {
-    "kylechui/nvim-surround",
-    version = "^3.0.0",
-    event = "VeryLazy",
-    config = function()
-      require("nvim-surround").setup({
-      })
-    end
-  },
-  -- we use blink plugin only when in insert mode
-  -- so lets lazyload it at InsertEnter event
-  {
-    "saghen/blink.cmp",
-    version = "1.*",
-    event = "InsertEnter",
-    dependencies = {
-      "rafamadriz/friendly-snippets",
-
-      -- snippets engine
-      {
-        "L3MON4D3/LuaSnip",
-        config = function()
-          require("luasnip.loaders.from_vscode").lazy_load()
-        end,
-      },
-
-      -- autopairs , autocompletes ()[] etc
-      { "windwp/nvim-autopairs", opts = {} },
-    },
-    -- made opts a function cuz cmp config calls cmp module
-    -- and we lazyloaded cmp so we dont want that file to be read on startup!
-    opts = function()
-      return require "plugins.configs.blink"
-    end,
-  },
-
-  {
-    "williamboman/mason.nvim",
-    build = ":MasonUpdate",
-    cmd = { "Mason", "MasonInstall" },
-    opts = {},
-  },
-
-  {
-    "neovim/nvim-lspconfig",
-    config = function()
-      require "plugins.configs.lspconfig"
-    end,
-  },
-
-  {
-    "stevearc/conform.nvim",
-    opts = require "plugins.configs.conform",
-  },
-  {
-    "stevearc/oil.nvim",
-    opts = function()
-      require "plugins.configs.oil"
-    end
-  },
-  {
-    "kdheepak/lazygit.nvim",
-    cmd = "LazyGit",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-    },
-  },
+			vim.keymap.set('n', '<leader>ff', builtin.find_files)
+			vim.keymap.set('n', '<leader>fw', builtin.live_grep)
+			vim.keymap.set('n', '<leader>fb', builtin.buffers)
+		end
+	},
+	{ src = "https://github.com/nvim-treesitter/nvim-treesitter" },
+	{ src = "https://github.com/nvim-lua/plenary.nvim" }
 }

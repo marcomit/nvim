@@ -1,41 +1,25 @@
-local o = vim.o
-local g = vim.g
-local opt = vim.opt
+local o = vim.opt
 
-g.mapleader = " "
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
 
-o.laststatus = 0 -- global statusline
-o.showmode = false
-o.relativenumber = true
 o.number = false
-
-o.clipboard = "unnamedplus"
-
--- Indenting
-o.expandtab = true
+o.relativenumber = false
+o.mouse = 'a'
 o.shiftwidth = 2
-o.smartindent = true
+o.wrap = false
 o.tabstop = 2
-o.softtabstop = 2
-o.winborder = "rounded"
-
-opt.fillchars = { eob = " " }
 o.ignorecase = true
 o.smartcase = true
-o.mouse = "a"
-
-o.number = true
-
 o.signcolumn = "yes"
-o.splitbelow = true
-o.splitright = true
+o.swapfile = false
+o.winborder = "rounded"
+o.clipboard = 'unnamedplus'
 o.termguicolors = true
-o.timeoutlen = 400
 o.undofile = true
-o.cursorline = true
--- opt.guicursor = "n-v-c-i:block,r:hor20"
-opt.whichwrap:append "<>[]hl"
-
--- add binaries installed by mason.nvim to path
-local is_windows = vim.loop.os_uname().sysname == "Windows_NT"
-vim.env.PATH = vim.env.PATH .. (is_windows and ";" or ":") .. vim.fn.stdpath "data" .. "/mason/bin"
+o.completeopt = { "menu", "menuone", "noselect" }
+o.shortmess:append("c")
+o.showmode = false
+o.showcmd = false
+o.cmdheight = 0
+o.laststatus = 0

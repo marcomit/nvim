@@ -1,30 +1,45 @@
 require "options"
 require "mappings"
 
--- bootstrap plugins & lazy.nvim
-local lazypath = vim.fn.stdpath "data" .. "/lazy/lazy.nvim" -- path where its going to be installed
+vim.keymap.set('n', '<leader>o', ':update<cr> :source<cr>')
 
-if not vim.loop.fs_stat(lazypath) then
-  vim.fn.system {
-    "git",
-    "clone",
-    "--filter=blob:none",
-    "https://github.com/folke/lazy.nvim.git",
-    "--branch=stable",
-    lazypath,
-  }
-end
+vim.pack.add({
+	{ src = "https://github.com/Mofiqul/vscode.nvim" },
+	{ src = "https://github.com/stevearc/oil.nvim" },
+	{ src = "https://github.com/neovim/nvim-lspconfig" },
+	{ src = "https://github.com/windwp/nvim-autopairs" },
+	{ src = "https://github.com/akinsho/bufferline.nvim" },
+  { src = "https://github.com/hrsh7th/nvim-cmp" },
+  { src = "https://github.com/hrsh7th/cmp-nvim-lsp" },
+  { src = "https://github.com/hrsh7th/cmp-buffer" },
+  { src = "https://github.com/hrsh7th/cmp-path" },
+	{ src = "https://github.com/nvim-telescope/telescope.nvim" },
+	{ src = "https://github.com/nvim-treesitter/nvim-treesitter" },
+	{ src = "https://github.com/nvim-lua/plenary.nvim" }
+})
 
-vim.opt.rtp:prepend(lazypath)
+require('vscode').setup({
+	transparent = true
+})
+require('oil').setup({})
+require('nvim-autopairs').setup({})
+require('bufferline').setup(require('plugins.bufferline'))
+require('nvim-treesitter').setup({
+	ensure_installed = { "lua", "vim", "typescript", "javascript", "dart" }
+})
 
-local plugins = require "plugins"
-
-require("lazy").setup(plugins, {})
+local telescope = require('telescope')
+-- telescope.load_extension('fzf')
+telescope.setup{
+  defaults = {
+    file_ignore_patterns = {"node_modules", ".git/", "windows", "macos", "build", "linux", "ios", "android"},
+  },
+}
 
 vim.diagnostic.config({
-  virtual_text = true,
-  signs = false,
-  underline = false,
+  virtual_text = false,
+  signs = true,
+  underline = true,
   update_in_insert = false,
   float = {
     focusable = true,
@@ -36,20 +51,38 @@ vim.diagnostic.config({
   },
 })
 
-vim.api.nvim_create_autocmd("BufWritePre", {
-  callback = function()
-    if vim.bo.filetype ~= "c" then
-      vim.lsp.buf.format({ async = false })
-    end
+require("nvim-treesitter.configs").setup {
+  ensure_installed = { "lua", "vim", "vimdoc", "html", "css", "typescript", "javascript" },
+
+  highlight = {
+    enable = true,
+    use_languagetree = true,
+  },
+  indent = { enable = true },
+}
+
+local builtin = require('telescope.builtin')
+vim.keymap.set('n', '<leader>ff', builtin.find_files)
+vim.keymap.set('n', '<leader>fw', builtin.live_grep)
+
+vim.api.nvim_create_autocmd("LspAttach", {
+  group = vim.api.nvim_create_augroup("UserLspConfig", {}),
+  callback = function(ev)
+    -- Enable completion triggered by <c-x><c-o>
+    vim.bo[ev.buf].omnifunc = "v:lua.vim.lsp.omnifunc"
+
+    local opts = { buffer = ev.buf }
+    vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
+    vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
   end,
 })
 
-vim.cmd "colorscheme vscode"
+vim.lsp.config("*", { capabilities = capabilities })
+local servers = { "html", "cssls", 'lua_ls', 'dartls', 'clangd', "ts_ls", "gopls" }
 
+vim.lsp.enable(servers)
+
+vim.lsp.enable({ "lua_ls", "ts_ls", "clangd", "pyright", "dartls" }, capabilities)
+vim.cmd("set completeopt+=noselect")
+vim.cmd("colorscheme vscode")
 vim.cmd(":hi statusline guibg=NONE")
-
-vim.opt.laststatus = 0
-vim.opt.cmdheight = 0
-vim.opt.ruler = false
-vim.opt.showmode = false
-vim.opt.showcmd = false
