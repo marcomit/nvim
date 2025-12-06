@@ -3,36 +3,35 @@ require "mappings"
 
 vim.keymap.set('n', '<leader>o', ':update<cr> :source<cr>')
 
-vim.pack.add({
-	{ src = "https://github.com/Mofiqul/vscode.nvim" },
-	{ src = "https://github.com/stevearc/oil.nvim" },
-	{ src = "https://github.com/neovim/nvim-lspconfig" },
-	{ src = "https://github.com/windwp/nvim-autopairs" },
-	{ src = "https://github.com/akinsho/bufferline.nvim" },
-	{ src = "https://github.com/nvim-telescope/telescope.nvim" },
-	{ src = "https://github.com/nvim-treesitter/nvim-treesitter" },
-	{ src = "https://github.com/nvim-lua/plenary.nvim" },
-	{ src = "https://github.com/kylechui/nvim-surround" },
-	{ src = "https://github.com/saghen/blink.cmp" }
-})
+local function load_plugins(plugin_list)
+	vim.pack.add(plugin_list)
+  for _, plugin in ipairs(plugin_list) do
+    if plugin.src then
+    end
+  end
 
-require('vscode').setup({
-	transparent = true
-})
-require('oil').setup({})
-require('nvim-autopairs').setup({})
-require('bufferline').setup(require('plugins.bufferline'))
-require('nvim-treesitter').setup({
-	ensure_installed = { "lua", "vim", "typescript", "javascript", "dart" }
-})
-require('nvim-surround').setup({})
+  for _, plugin in ipairs(plugin_list) do
+    if plugin.name and plugin.setup then
+      local ok, err = pcall(function()
+        require(plugin.name).setup(plugin.setup)
+      end)
+      if not ok then
+        vim.notify("Error setting up " .. plugin.name .. ": " .. err, vim.log.levels.ERROR)
+      end
+    end
+  end
 
-local telescope = require('telescope')
-telescope.setup{
-  defaults = {
-    file_ignore_patterns = {"node_modules", ".git/", "windows", "macos", "build", "linux", "ios", "android"},
-  }
-}
+  for _, plugin in ipairs(plugin_list) do
+    if plugin.config then
+      local ok, err = pcall(plugin.config)
+      if not ok then
+        vim.notify("Error in config for " .. (plugin.name or "unknown") .. ": " .. err, vim.log.levels.ERROR)
+      end
+    end
+  end
+end
+
+load_plugins(require('plugins'))
 
 vim.diagnostic.config({
   virtual_text = false,
@@ -49,38 +48,19 @@ vim.diagnostic.config({
   },
 })
 
-require("nvim-treesitter.configs").setup {
-  ensure_installed = { "lua", "vim", "vimdoc", "html", "css", "typescript", "javascript" },
-
-  highlight = {
-    enable = true,
-    use_languagetree = true,
-  },
-  indent = { enable = true },
-}
-
-local builtin = require('telescope.builtin')
-vim.keymap.set('n', '<leader>ff', builtin.find_files)
-vim.keymap.set('n', '<leader>fw', builtin.live_grep)
-
 vim.api.nvim_create_autocmd("LspAttach", {
   group = vim.api.nvim_create_augroup("UserLspConfig", {}),
   callback = function(ev)
-    -- Enable completion triggered by <c-x><c-o>
     vim.bo[ev.buf].omnifunc = "v:lua.vim.lsp.omnifunc"
-
     local opts = { buffer = ev.buf }
     vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
     vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
   end,
 })
 
+local capabilities = require('blink.cmp').get_lsp_capabilities()
 vim.lsp.config("*", { capabilities = capabilities })
-local servers = { "html", "cssls", 'lua_ls', 'dartls', 'clangd', "ts_ls", "gopls" }
+vim.lsp.enable({ "lua_ls", "ts_ls", "clangd", "pyright", "dartls", "html", "cssls", "gopls" }, capabilities)
 
-vim.lsp.enable(servers)
-
-vim.lsp.enable({ "lua_ls", "ts_ls", "clangd", "pyright", "dartls" }, capabilities)
-vim.cmd("set completeopt+=noselect")
-vim.cmd("colorscheme vscode")
+vim.cmd("set completeopt=menu,menuone,noselect")
 vim.cmd(":hi statusline guibg=NONE")

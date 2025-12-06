@@ -1,10 +1,6 @@
 return {
     options = {
         close_command = "bdelete %d",
-        indicator = {
-          style = "icon",
-          icon = "",
-        },
         left_trunc_marker = "",
         modified_icon = "●",
         offsets = { { filetype = "NvimTree", text = "EXPLORER", text_align = "center" } },

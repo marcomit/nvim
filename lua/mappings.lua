@@ -41,3 +41,5 @@ map('n', "<S-Tab>", "<cmd>BufferLineCyclePrev<CR>", { desc = "Prev tab" })
 
 map('n', '<leader>x', '<cmd>bdelete<CR>')
 
+map('n', '<leader>lg', '<cmd>LazyGit<cr>')
+

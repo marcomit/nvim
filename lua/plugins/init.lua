@@ -1,24 +1,111 @@
 return {
-	{ src = "https://github.com/Mofiqul/vscode.nvim" },
-	{ src = "https://github.com/stevearc/oil.nvim" },
-	{ src = "https://github.com/neovim/nvim-lspconfig" },
-	{ src = "https://github.com/windwp/nvim-autopairs" },
-	{ src = "https://github.com/akinsho/bufferline.nvim" },
-  { src = "https://github.com/hrsh7th/nvim-cmp" },
-  { src = "https://github.com/hrsh7th/cmp-nvim-lsp" },
-  { src = "https://github.com/hrsh7th/cmp-buffer" },
-  { src = "https://github.com/hrsh7th/cmp-path" },
-	{
-		src = "https://github.com/nvim-telescope/telescope.nvim",
-		setup = require('plugins.telescope'),
-		opts = function() 
-			local builtin = require('telescope.builtin')
+	{ 
+		src = "https://github.com/Mofiqul/vscode.nvim",
+		name = 'vscode',
+		setup = {
+			transparent = true
+		} 
+	},
 
+	{
+		src = "https://github.com/vague-theme/vague.nvim",
+		name = 'vague',
+		setup = require('plugins.vague'),
+		config = function()
+			vim.cmd("colorscheme vague")
+		end
+	},
+
+	{
+		src = "https://github.com/kdheepak/lazygit.nvim"
+	},
+	
+	{ 
+		src = "https://github.com/stevearc/oil.nvim", 
+		name = 'oil',
+		setup = {}
+	},
+	
+	{ 
+		src = "https://github.com/neovim/nvim-lspconfig"
+	},
+	
+	{ 
+		src = "https://github.com/windwp/nvim-autopairs", 
+		name = 'nvim-autopairs',
+		setup = {
+			cmd = {
+				"LazyGit"
+			}
+		}
+	},
+	
+	{ 
+		src = "https://github.com/akinsho/bufferline.nvim", 
+		name = 'bufferline', 
+		setup = require('plugins.bufferline')
+	},
+	
+	{ 
+		src = "https://github.com/nvim-telescope/telescope.nvim",
+		name = 'telescope', 
+		setup = {
+			defaults = {
+				file_ignore_patterns = {
+					"node_modules", 
+					".git/", 
+					"windows", 
+					"macos", 
+					"build", 
+					"linux", 
+					"ios", 
+					"android"
+				},
+			}
+		},
+		config = function()
+			local builtin = require('telescope.builtin')
 			vim.keymap.set('n', '<leader>ff', builtin.find_files)
 			vim.keymap.set('n', '<leader>fw', builtin.live_grep)
 			vim.keymap.set('n', '<leader>fb', builtin.buffers)
 		end
 	},
-	{ src = "https://github.com/nvim-treesitter/nvim-treesitter" },
-	{ src = "https://github.com/nvim-lua/plenary.nvim" }
+	
+	{ 
+		src = "https://github.com/nvim-treesitter/nvim-treesitter",
+		name = 'nvim-treesitter',
+		setup = {
+			ensure_installed = { "lua", "vim", "typescript", "javascript", "dart" }
+		},
+		config = function()
+			require("nvim-treesitter.configs").setup {
+				ensure_installed = { 
+					"lua", "vim", "vimdoc", 
+					"html", "css", 
+					"typescript", "javascript" 
+				},
+				highlight = {
+					enable = true,
+					use_languagetree = true,
+				},
+				indent = { enable = true },
+			}
+		end
+	},
+	
+	{ 
+		src = "https://github.com/nvim-lua/plenary.nvim" 
+	},
+	
+	{ 
+		src = "https://github.com/kylechui/nvim-surround", 
+		name = 'nvim-surround',
+		setup = {}
+	},
+	
+	{ 
+		src = "https://github.com/saghen/blink.cmp", 
+		name = 'blink.cmp', 
+		setup = require('plugins.blink')
+	}
 }
