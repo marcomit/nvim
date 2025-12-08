@@ -2,13 +2,14 @@ local map = vim.keymap.set
 
 map({ 'n', 'v' }, ';', ':')
 map({ 'n', 'v' }, 'w', '<cmd>w<cr>')
+map({ 'n', 'v' }, 'q', '<cmd>q<cr>')
 
 map({ 'n', 'v' }, '<esc>', '<cmd>nohlsearch<cr>')
 map({ 'n', 'v' }, '=', '$')
 map({ 'n', 'v' }, '-', '^')
 map({ 'n', 'v' }, ',', '%')
 
-map('n', '<leader>e', '<cmd>Oil<cr>')
+map('n', '<leader>e', '<cmd>Oil --float<cr>')
 
 -- Comments
 map('n', '<leader>/', 'gcc', { remap = true })
@@ -20,6 +21,11 @@ map('n', '<leader>d', vim.diagnostic.open_float)
 map("n", "<leader>ff", ":Telescope find_files<CR>")
 map("n", "<leader>fw", ":Telescope live_grep<CR>")
 map("n", "<leader>fb", ":Telescope buffers<CR>")
+
+-- Format file
+map({ 'n', 'v' }, '<leader>fm', function()
+	require('conform').format({ async = true, lsp_fallback = true })
+end)
 
 -- Indent
 map('n', '<', 'v<')
@@ -42,4 +48,3 @@ map('n', "<S-Tab>", "<cmd>BufferLineCyclePrev<CR>", { desc = "Prev tab" })
 map('n', '<leader>x', '<cmd>bdelete<CR>')
 
 map('n', '<leader>lg', '<cmd>LazyGit<cr>')
-

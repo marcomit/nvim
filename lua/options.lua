@@ -5,7 +5,6 @@ vim.g.maplocalleader = " "
 
 o.number = false
 o.relativenumber = false
-o.mouse = 'a'
 o.shiftwidth = 2
 o.wrap = false
 o.tabstop = 2
@@ -23,3 +22,4 @@ o.showmode = false
 o.showcmd = false
 o.cmdheight = 0
 o.laststatus = 0
+o.mouse = 'n'

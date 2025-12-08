@@ -1,37 +1,32 @@
 return {
-	{ 
+	-- Color scheme
+	{
 		src = "https://github.com/Mofiqul/vscode.nvim",
 		name = 'vscode',
-		setup = {
-			transparent = true
-		} 
+		setup = { }
 	},
-
 	{
 		src = "https://github.com/vague-theme/vague.nvim",
 		name = 'vague',
 		setup = require('plugins.vague'),
-		config = function()
-			vim.cmd("colorscheme vague")
-		end
 	},
 
 	{
 		src = "https://github.com/kdheepak/lazygit.nvim"
 	},
-	
-	{ 
-		src = "https://github.com/stevearc/oil.nvim", 
+	{
+		src = "https://github.com/stevearc/oil.nvim",
 		name = 'oil',
-		setup = {}
+		setup = require('plugins.oil')
 	},
-	
-	{ 
-		src = "https://github.com/neovim/nvim-lspconfig"
+	{
+		src = "https://github.com/neovim/nvim-lspconfig",
+		config = function()
+			require('plugins.lspconfig')
+		end
 	},
-	
-	{ 
-		src = "https://github.com/windwp/nvim-autopairs", 
+	{
+		src = "https://github.com/windwp/nvim-autopairs",
 		name = 'nvim-autopairs',
 		setup = {
 			cmd = {
@@ -39,26 +34,24 @@ return {
 			}
 		}
 	},
-	
-	{ 
-		src = "https://github.com/akinsho/bufferline.nvim", 
-		name = 'bufferline', 
+	{
+		src = "https://github.com/akinsho/bufferline.nvim",
+		name = 'bufferline',
 		setup = require('plugins.bufferline')
 	},
-	
-	{ 
+	{
 		src = "https://github.com/nvim-telescope/telescope.nvim",
-		name = 'telescope', 
+		name = 'telescope',
 		setup = {
 			defaults = {
 				file_ignore_patterns = {
-					"node_modules", 
-					".git/", 
-					"windows", 
-					"macos", 
-					"build", 
-					"linux", 
-					"ios", 
+					"node_modules",
+					".git/",
+					"windows",
+					"macos",
+					"build",
+					"linux",
+					"ios",
 					"android"
 				},
 			}
@@ -70,8 +63,7 @@ return {
 			vim.keymap.set('n', '<leader>fb', builtin.buffers)
 		end
 	},
-	
-	{ 
+	{
 		src = "https://github.com/nvim-treesitter/nvim-treesitter",
 		name = 'nvim-treesitter',
 		setup = {
@@ -79,10 +71,10 @@ return {
 		},
 		config = function()
 			require("nvim-treesitter.configs").setup {
-				ensure_installed = { 
-					"lua", "vim", "vimdoc", 
-					"html", "css", 
-					"typescript", "javascript" 
+				ensure_installed = {
+					"lua", "vim", "vimdoc",
+					"html", "css",
+					"typescript", "javascript"
 				},
 				highlight = {
 					enable = true,
@@ -92,20 +84,22 @@ return {
 			}
 		end
 	},
-	
-	{ 
-		src = "https://github.com/nvim-lua/plenary.nvim" 
+	{
+		src = "https://github.com/nvim-lua/plenary.nvim"
 	},
-	
-	{ 
-		src = "https://github.com/kylechui/nvim-surround", 
+	{
+		src = "https://github.com/kylechui/nvim-surround",
 		name = 'nvim-surround',
 		setup = {}
 	},
-	
-	{ 
-		src = "https://github.com/saghen/blink.cmp", 
-		name = 'blink.cmp', 
+	{
+		src = "https://github.com/saghen/blink.cmp",
+		name = 'blink.cmp',
 		setup = require('plugins.blink')
+	},
+	{
+		src = "https://github.com/stevearc/conform.nvim",
+		name = "conform",
+		setup = require('plugins.conform')
 	}
 }
