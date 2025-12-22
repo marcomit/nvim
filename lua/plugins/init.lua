@@ -10,7 +10,13 @@ return {
 		name = 'vague',
 		setup = require('plugins.vague'),
 	},
-
+	{
+		src = "https://github.com/nvim-mini/mini.nvim",
+		name = 'mini',
+		config = function()
+			require('plugins.mini')
+		end
+	},
 	{
 		src = "https://github.com/kdheepak/lazygit.nvim"
 	},
@@ -24,20 +30,6 @@ return {
 		config = function()
 			require('plugins.lspconfig')
 		end
-	},
-	{
-		src = "https://github.com/windwp/nvim-autopairs",
-		name = 'nvim-autopairs',
-		setup = {
-			cmd = {
-				"LazyGit"
-			}
-		}
-	},
-	{
-		src = "https://github.com/akinsho/bufferline.nvim",
-		name = 'bufferline',
-		setup = require('plugins.bufferline')
 	},
 	{
 		src = "https://github.com/nvim-telescope/telescope.nvim",

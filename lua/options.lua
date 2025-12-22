@@ -22,4 +22,4 @@ o.showmode = false
 o.showcmd = false
 o.cmdheight = 0
 o.laststatus = 0
-o.mouse = 'n'
+o.mouse = 'a'
