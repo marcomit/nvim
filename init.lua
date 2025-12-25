@@ -17,7 +17,10 @@ local function load_plugins(plugin_list)
   end
 end
 
-load_plugins(require('plugins'))
-vim.cmd("set completeopt=menu,menuone,noselect")
-vim.cmd(":hi statusline guibg=NONE")
+local plugins = require('plugins')
+
+load_plugins(plugins)
+
 vim.cmd("colorscheme vague")
+
+vim.cmd(":hi statusline guibg=NONE")
