@@ -4,9 +4,9 @@ map({ 'n', 'v' }, ';', ':')
 map({ 'n', 'v' }, 'w', '<cmd>w<cr>')
 
 map({ 'n', 'v' }, '<esc>', '<cmd>nohlsearch<cr>')
-map({ 'n', 'v' }, '=', '$')
-map({ 'n', 'v' }, '-', '^')
-map({ 'n', 'v' }, ',', '%')
+map({ 'n', 'v', 'o' }, '=', '$')
+map({ 'n', 'v', 'o' }, '-', '^')
+map({ 'n', 'v', 'o' }, ',', '%')
 
 map('n', '<leader>e', '<cmd>Oil --float<cr>')
 
