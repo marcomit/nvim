@@ -23,3 +23,11 @@ o.showcmd = false
 o.cmdheight = 0
 -- o.laststatus = 0
 o.mouse = 'a'
+
+-- Zinc language filetype detection
+vim.filetype.add({
+  extension = {
+    zn = "zinc",
+    zinc = "zinc",
+  },
+})

@@ -10,7 +10,7 @@ return {
 		use_nvim_cmp_as_default = true,
 	},
 	sources = {
-		default = { 'lsp', 'path', 'buffer' },
+		default = { 'lsp', 'path', 'buffer', 'omni' },
 	},
 	completion = {
 		documentation = {

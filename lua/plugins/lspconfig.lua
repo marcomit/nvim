@@ -1,8 +1,8 @@
 vim.diagnostic.config({
-  virtual_text = true,
-  signs = false,
+  virtual_text = false,
+  signs = true,
   underline = false,
-  update_in_insert = true,
+  update_in_insert = false,
   float = {
     focusable = true,
     close_events = { "BufLeave", "CursorMoved", "InsertEnter", "FocusLost" },
