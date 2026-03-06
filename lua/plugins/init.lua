@@ -1,9 +1,16 @@
 return {
 	-- Color scheme
 	{
-		src = "https://github.com/Mofiqul/vscode.nvim",
-		name = 'vscode',
-		setup = { }
+		src = "https://github.com/nyoom-engineering/oxocarbon.nvim",
+		name = 'oxocarbon',
+		config = function()
+		end
+	},
+	{
+		src = "https://github.com/kungfusheep/mfd.nvim",
+		name = 'mfd',
+		config = function()
+		end
 	},
 	{
 		src = "https://github.com/vague-theme/vague.nvim",
@@ -59,10 +66,10 @@ return {
 		src = "https://github.com/nvim-treesitter/nvim-treesitter",
 		name = 'nvim-treesitter',
 		setup = {
-			ensure_installed = { "lua", "vim", "typescript", "javascript", "dart" }
+			ensure_installed = { "lua", "vim", "typescript", "javascript", "dart", "clangd" }
 		},
 		config = function()
-			require("nvim-treesitter.configs").setup {
+			require("nvim-treesitter").setup {
 				ensure_installed = {
 					"lua", "vim", "vimdoc",
 					"html", "css",
