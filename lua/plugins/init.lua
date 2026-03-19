@@ -10,6 +10,7 @@ return {
 		src = "https://github.com/kungfusheep/mfd.nvim",
 		name = 'mfd',
 		config = function()
+			require('mfd').enable_cursor_sync()
 		end
 	},
 	{
@@ -87,11 +88,6 @@ return {
 		src = "https://github.com/nvim-lua/plenary.nvim"
 	},
 	{
-		src = "https://github.com/kylechui/nvim-surround",
-		name = 'nvim-surround',
-		setup = {}
-	},
-	{
 		src = "https://github.com/saghen/blink.cmp",
 		name = 'blink.cmp',
 		setup = require('plugins.blink')
@@ -100,5 +96,16 @@ return {
 		src = "https://github.com/stevearc/conform.nvim",
 		name = "conform",
 		setup = require('plugins.conform')
+	},
+	{
+		src = "https://github.com/ej-shafran/compile-mode.nvim",
+		name = "compile-mode",
+		config = function()
+			vim.g.compile_mode = {
+				default_command = "",
+				focus_compilation_buffer = true,
+				auto_scroll = true
+			}
+		end
 	}
 }

@@ -51,3 +51,5 @@ map('n', "<S-Tab>", "<cmd>bprevious<CR>", { desc = "Prev tab" })
 map('n', '<leader>x', '<cmd>bdelete<CR>')
 
 map('n', '<leader>lg', '<cmd>LazyGit<cr>')
+
+map('n', '<leader>c', '<cmd>below Compile<cr>')

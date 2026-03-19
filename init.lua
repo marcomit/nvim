@@ -24,5 +24,6 @@ load_plugins(plugins)
 vim.cmd("colorscheme vague")
 -- vim.cmd("colorscheme oxocarbon")
 -- vim.cmd("colorscheme monochrome")
+-- vim.cmd("colorscheme mfd-flir")
 
 vim.cmd(":hi statusline guibg=NONE")
