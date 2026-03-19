@@ -21,6 +21,7 @@ o.shortmess:append("c")
 o.showmode = false
 o.showcmd = false
 o.cmdheight = 0
+o.cursorline = true
 -- o.laststatus = 0
 o.mouse = 'a'
 
