@@ -5,9 +5,11 @@ vim.g.maplocalleader = " "
 
 o.number = false
 o.relativenumber = false
-o.shiftwidth = 2
+o.expandtab = true
+o.shiftwidth = 4
+o.tabstop = 4
+o.softtabstop = 4
 o.wrap = false
-o.tabstop = 2
 o.ignorecase = true
 o.smartcase = true
 o.signcolumn = "yes"
