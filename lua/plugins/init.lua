@@ -6,11 +6,22 @@ return {
 		config = function()
 		end
 	},
+    {
+        src = "https://github.com/Mofiqul/vscode.nvim",
+        name = 'vscode',
+        config = function()
+        end,
+        setup = {
+            transparent = true
+        }
+    },
 	{
 		src = "https://github.com/kungfusheep/mfd.nvim",
 		name = 'mfd',
 		config = function()
 			require('mfd').enable_cursor_sync()
+            -- vim.api.nvim_set_hl(0, "Keyword", { fg = p.fg, italic = true })
+            -- vim.api.nvim_set_hl(0, "String", { fg = p.fg, underline = true })
 		end
 	},
 	{
